@@ -1,7 +1,7 @@
-FROM registry.redhat.io/openshift3/jenkins-slave-base-rhel7
+FROM registry.redhat.io/openshift4/ose-jenkins-agent-base:latest
 LABEL com.redhat.component="jenkins-agent-python-rhel7-container" \
       name="jenkins-agent-python-rhel7" \
-      version="3.6" \
+      version="4.1" \
       architecture="x86_64" \
       io.k8s.display-name="Jenkins Agent Python" \
       io.k8s.description="The jenkins build agent Python" \
@@ -16,14 +16,13 @@ ENV PYTHON_VERSION=3.6 \
 
 COPY contrib/bin/scl_enable /usr/local/bin/scl_enable
 
-RUN yum-config-manager --enable rhel-server-rhscl-7-rpms && \
-    INSTALL_PKGS="rh-python36-python-devel rh-python36-python-pip rh-python36-python-setuptools gcc libcurl-devel httpd httpd-devel" && \
+RUN INSTALL_PKGS="rh-python36-python-devel rh-python36-python-pip rh-python36-python-setuptools gcc libcurl-devel httpd httpd-devel" && \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
     rpm -e --nodeps redhat-logos && \
     yum clean all -y && \
     rm -rf /var/cache/yum && \
-    pip install --upgrade pip \
+    pip install --upgrade pip && \
     chown -R 1001:0 $HOME && \
     chmod -R g+rw $HOME
 

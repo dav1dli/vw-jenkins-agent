@@ -1,0 +1,26 @@
+/**
+* Sample Jenkinsfile
+* It shows hot to build a Docker image
+ */
+pipeline {
+  agent {
+    node {
+      label 'python'
+    }
+  }
+  options {
+    timeout(time: 10, unit: 'MINUTES')
+  }
+  stages {
+    stage('SCM') {
+      steps {
+        git url: 'https://github.com/dav1dli/vw-jenkins-agent.git'
+      }
+    }
+    stage('Build') {
+      steps {
+        echo "ToDo: Build image"
+      }
+    }
+  }
+}
